@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.m_whm">
+    package="id.bts.whm">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Weekly Health Monitoring"

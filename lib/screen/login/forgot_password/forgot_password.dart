@@ -25,6 +25,7 @@ class ForgotPassword extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       KTextField(
+                        keyboardType: TextInputType.emailAddress,
                         label: "Email",
                         placeholder: "Enter your email",
                         prefixIcon: Image.asset('assets/icons/ic_email.png',

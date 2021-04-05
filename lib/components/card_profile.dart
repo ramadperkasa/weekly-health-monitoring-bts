@@ -14,11 +14,14 @@ class CardProfile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipRRect(
-              child: Image.asset(
-                'assets/images/avatar.png',
-                fit: BoxFit.contain,
-                scale: 1.70,
+            Hero(
+              tag: 'account',
+              child: ClipRRect(
+                child: Image.asset(
+                  'assets/images/avatar.png',
+                  fit: BoxFit.contain,
+                  scale: 1.70,
+                ),
               ),
             ),
             ListTile(

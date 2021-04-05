@@ -26,6 +26,7 @@ class DetailInformationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           KTextField(
+            keyboardType: TextInputType.streetAddress,
             label: 'Destination',
             placeholder: 'Enter Your Destination',
           ),
@@ -36,6 +37,7 @@ class DetailInformationCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: KTextField(
+                    keyboardType: TextInputType.datetime,
                     prefixIcon: Image.asset('assets/icons/ic_calendar.png',
                         height: 25, width: 25),
                     label: 'From',
@@ -47,6 +49,7 @@ class DetailInformationCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: KTextField(
+                    keyboardType: TextInputType.datetime,
                     prefixIcon: Image.asset('assets/icons/ic_calendar.png'),
                     label: 'To',
                     placeholder: 'DD/MM/YYYY',
@@ -58,6 +61,7 @@ class DetailInformationCard extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 12.0),
             child: KTextField(
+              keyboardType: TextInputType.multiline,
               maxLines: 5,
               label: 'Reason',
               placeholder: 'Enter Your Reason',

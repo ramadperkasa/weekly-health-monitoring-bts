@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
         "Cupertino",
-        "Schyler"
-    ]
+        "Schyler",
+        "spinkit"
+    ],
+    "FSharp.suggestGitignore": false
 }

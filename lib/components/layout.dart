@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:m_whm/coba.dart';
 import 'package:m_whm/const/color.dart';
 
 class Layout extends StatelessWidget {
@@ -79,13 +80,21 @@ class Layout extends StatelessWidget {
                   actions: [
                     Padding(
                       padding: const EdgeInsets.all(18.0),
-                      child: Badge(
-                        position: BadgePosition(top: 7, end: 3),
-                        badgeColor: BaseColors.accent,
-                        child: Image.asset(
-                          'assets/icons/ic_notification.png',
-                          height: 25,
-                          width: 25,
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DBTestPage(),
+                          ),
+                        ),
+                        child: Badge(
+                          position: BadgePosition(top: 7, end: 3),
+                          badgeColor: BaseColors.accent,
+                          child: Image.asset(
+                            'assets/icons/ic_notification.png',
+                            height: 25,
+                            width: 25,
+                          ),
                         ),
                       ),
                     )

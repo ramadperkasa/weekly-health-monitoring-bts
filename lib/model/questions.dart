@@ -26,6 +26,7 @@ class Questions {
   setAnswer(value) {
     _answer.replaceRange(currentQuestions - 1, currentQuestions, [value]);
     _currentAnswer = value;
+    print(_answer);
   }
 
   QuestionsChoice getCurrentAnswer() {
@@ -54,7 +55,6 @@ class Questions {
   }
 
   void nextQuestions() {
-    print(currentQuestions);
     currentQuestions++;
     _currentAnswer = QuestionsChoice.belum_di_set;
     _answer.add(QuestionsChoice.belum_di_set);

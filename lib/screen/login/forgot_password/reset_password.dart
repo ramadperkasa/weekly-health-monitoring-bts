@@ -39,6 +39,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 KTextField(
+                  keyboardType: TextInputType.visiblePassword,
                   obscure: obscure1,
                   label: "New Password",
                   placeholder: "Enter your new password",
@@ -61,6 +62,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   height: 24.0,
                 ),
                 KTextField(
+                  keyboardType: TextInputType.visiblePassword,
                   obscure: obscure2,
                   label: "Confirm Password",
                   placeholder: "Confirm your password",

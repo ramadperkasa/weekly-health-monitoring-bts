@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "293543257863",
+    "project_id": "weekly-health-monitoring",
+    "storage_bucket": "weekly-health-monitoring.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293543257863:android:89f16172927a85903c87a2",
+        "android_client_info": {
+          "package_name": "id.bts.whm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293543257863-qec6u1o78ijfqk62sr7od4tpot9g6f90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABi7sKQWiMq038hvqWG6-pGqAb2krWJbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293543257863-qec6u1o78ijfqk62sr7od4tpot9g6f90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

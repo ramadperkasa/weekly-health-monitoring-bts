@@ -9,14 +9,18 @@ class KTextField extends StatelessWidget {
     this.suffixIcon,
     this.placeholder,
     this.maxLines = 1,
+    this.onChanged,
+    this.keyboardType = TextInputType.text,
   });
 
+  final Function onChanged;
   final bool obscure;
   final String label;
   final Widget prefixIcon;
   final Widget suffixIcon;
   final String placeholder;
   final int maxLines;
+  final TextInputType keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,8 @@ class KTextField extends StatelessWidget {
           height: 12.0,
         ),
         TextField(
+          keyboardType: keyboardType,
+          onChanged: onChanged,
           style: TextStyle(fontSize: 18.0),
           obscureText: obscure,
           textAlignVertical: TextAlignVertical.center,

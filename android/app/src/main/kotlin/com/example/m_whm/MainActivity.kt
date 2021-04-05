@@ -1,4 +1,4 @@
-package com.example.m_whm
+package id.bts.whm
 
 import io.flutter.embedding.android.FlutterActivity
 

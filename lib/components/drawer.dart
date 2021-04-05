@@ -1,11 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:m_whm/const/color.dart';
 
 class DrawerList extends StatelessWidget {
-  const DrawerList({
-    Key key,
-  }) : super(key: key);
-
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -49,11 +47,14 @@ class DrawerList extends StatelessWidget {
                   GestureDetector(
                     onTap: () => Navigator.pushNamed(context, '/profile'),
                     child: ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: Image.asset(
-                          'assets/images/avatar.png',
-                          fit: BoxFit.contain,
+                      leading: Hero(
+                        tag: 'account',
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: Image.asset(
+                            'assets/images/avatar.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       title: Text(
@@ -81,7 +82,8 @@ class DrawerList extends StatelessWidget {
                       color: Colors.white,
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        await _auth.signOut();
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/login', (Route<dynamic> route) => false);
                       },
