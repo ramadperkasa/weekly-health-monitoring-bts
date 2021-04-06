@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:m_whm/components/textfield.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 
 class DetailInformationCard extends StatelessWidget {
   DetailInformationCard({this.onPress});

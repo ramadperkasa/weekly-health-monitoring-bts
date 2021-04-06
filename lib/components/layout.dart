@@ -1,7 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/coba.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 
 class Layout extends StatelessWidget {
   Layout({
@@ -81,12 +80,7 @@ class Layout extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DBTestPage(),
-                          ),
-                        ),
+                        onTap: () => Navigator.pushNamed(context, '/history'),
                         child: Badge(
                           position: BadgePosition(top: 7, end: 3),
                           badgeColor: BaseColors.accent,

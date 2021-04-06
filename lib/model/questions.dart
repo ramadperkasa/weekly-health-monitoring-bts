@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:m_whm/sqlite/db_helper.dart';
+
 enum QuestionsChoice { ya, tidak, belum_di_set }
 
 class Questions {
@@ -8,6 +11,8 @@ class Questions {
   int currentQuestions = 1;
 
   int numberForm = 1;
+
+  var dbHelper = DBHelper();
 
   void clearQuestions() {
     _answer = [QuestionsChoice.belum_di_set];
@@ -26,7 +31,6 @@ class Questions {
   setAnswer(value) {
     _answer.replaceRange(currentQuestions - 1, currentQuestions, [value]);
     _currentAnswer = value;
-    print(_answer);
   }
 
   QuestionsChoice getCurrentAnswer() {
@@ -48,10 +52,26 @@ class Questions {
   }
 
   bool isLast(questionList) {
-    if (currentQuestions == questionList.length)
+    if (currentQuestions == questionList.length) {
+      insertToDb(questionList, _answer);
       return true;
-    else
+    } else
       return false;
+  }
+
+  void insertToDb(question, answer) async {
+    final DateTime now = DateTime.now();
+
+    for (var i = 0; i < answer.length; i++) {
+      Map<String, dynamic> row = {
+        "name": "Weekly Health Monitoring",
+        "question": question[i]['question'],
+        'answer': answer[i] == QuestionsChoice.ya ? "YA" : "TIDAK",
+        'date': now.toString()
+      };
+
+      await dbHelper.save(row);
+    }
   }
 
   void nextQuestions() {

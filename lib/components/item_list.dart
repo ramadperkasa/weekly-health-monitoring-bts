@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/const/color.dart';
-import 'package:m_whm/const/date_time_format.dart';
+import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constant/date_time_format.dart';
 import 'package:m_whm/screen/loading_screen.dart';
 import 'package:mock_data/mock_data.dart';
 

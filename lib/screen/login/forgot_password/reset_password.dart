@@ -3,7 +3,7 @@ import 'package:m_whm/components/button_block.dart';
 import 'package:m_whm/components/layout.dart';
 import 'package:m_whm/components/textfield.dart';
 import 'package:m_whm/components/title_login.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 
 enum PassType { newPass, confPass }
 
