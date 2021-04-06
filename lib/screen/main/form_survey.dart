@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:m_whm/components/button_block.dart';
 import 'package:m_whm/components/detail_information_question.dart';
 import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 import 'package:m_whm/model/questions.dart';
 
 class FormSurvey extends StatefulWidget {
@@ -137,9 +137,8 @@ class _FormSurveyState extends State<FormSurvey> {
                                 : false,
                             onPress: () {
                               setState(() {
-                                if (!questions.isLast(
-                                  currentQuestion ?? null,
-                                )) {
+                                if (!questions
+                                    .isLast(currentQuestion ?? null)) {
                                   questions.nextQuestions();
                                 } else {
                                   Navigator.pushNamedAndRemoveUntil(

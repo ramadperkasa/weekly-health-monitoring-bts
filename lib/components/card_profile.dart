@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 
 class CardProfile extends StatelessWidget {
   CardProfile({this.onPressed});

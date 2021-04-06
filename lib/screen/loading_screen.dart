@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 import 'package:m_whm/screen/main/form_survey.dart';
 import 'package:m_whm/services/network.dart';
 

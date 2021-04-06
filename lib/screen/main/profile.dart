@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:m_whm/components/card_profile.dart';
 import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/const/color.dart';
+import 'package:m_whm/constant/color.dart';
 
 class Profile extends StatelessWidget {
   final double ratioHeight = 1.13;

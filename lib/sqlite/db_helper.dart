@@ -4,14 +4,16 @@ import 'package:m_whm/sqlite/question.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'question.dart';
 
 class DBHelper {
   static Database _db;
   static const String ID = 'id';
   static const String NAME = 'name';
-  static const String TABLE = 'QuestionSql';
-  static const String DB_NAME = 'question1.db';
+  static const String QUESTION = 'question';
+  static const String ANSWER = 'answer';
+  static const String DATE = 'date';
+  static const String TABLE = 'my_table';
+  static const String DB_NAME = 'MyDatabase.db';
 
   Future<Database> get db async {
     if (_db != null) {
@@ -29,26 +31,23 @@ class DBHelper {
   }
 
   _onCreate(Database db, int version) async {
-    await db
-        .execute("CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY, $NAME TEXT)");
+    await db.execute('''CREATE TABLE $TABLE (
+         $ID INTEGER PRIMARY KEY,
+         $NAME TEXT,
+         $QUESTION TEXT,
+         $ANSWER TEXT,
+         $DATE TEXT
+        )''');
   }
 
-  Future<QuestionSql> save(QuestionSql question) async {
+  Future<int> save(Map<String, dynamic> row) async {
     var dbClient = await db;
-    question.id = await dbClient.insert(TABLE, question.toMap());
-    return question;
+    return await dbClient.insert(TABLE, row);
   }
 
-  Future<List<QuestionSql>> getQuestionSqls() async {
+  Future<List<Map<String, dynamic>>> queryAllRows() async {
     var dbClient = await db;
-    List<Map> maps = await dbClient.query(TABLE, columns: [ID, NAME]);
-    List<QuestionSql> questions = [];
-    if (maps.length > 0) {
-      for (int i = 0; i < maps.length; i++) {
-        questions.add(QuestionSql.fromMap(maps[i]));
-      }
-    }
-    return questions;
+    return await dbClient.query(TABLE);
   }
 
   Future<int> delete(int id) async {
@@ -56,10 +55,10 @@ class DBHelper {
     return await dbClient.delete(TABLE, where: '$ID = ?', whereArgs: [id]);
   }
 
-  Future<int> update(QuestionSql question) async {
+  Future<int> update(QuestionModelSql row) async {
     var dbClient = await db;
-    return await dbClient.update(TABLE, question.toMap(),
-        where: '$ID = ?', whereArgs: [question.id]);
+    return await dbClient
+        .update(TABLE, row.toMap(), where: '$ID = ?', whereArgs: [row.id]);
   }
 
   Future close() async {
