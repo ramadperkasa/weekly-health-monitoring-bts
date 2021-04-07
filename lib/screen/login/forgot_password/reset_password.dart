@@ -19,6 +19,37 @@ class _ResetPasswordState extends State<ResetPassword> {
   String password;
   String newPassword;
 
+  bool error = false;
+  String errorText;
+
+  bool errorNew = false;
+  String errorTextNew;
+
+  void _validate() async {
+    setState(() {
+      error = false;
+      errorText = null;
+
+      errorNew = false;
+      errorTextNew = null;
+
+      if (password == null) {
+        error = true;
+        errorText = 'Password Harus Diisi';
+      } else if (newPassword == null) {
+        errorNew = true;
+        errorTextNew = 'Confirm Password Harus Diisi';
+      } else if (password != newPassword) {
+        error = true;
+        errorText = 'Password tidak sama';
+        errorNew = true;
+        errorTextNew = 'Password tidak sama';
+      }
+
+      print(error.toString() + errorNew.toString());
+    });
+  }
+
   void show(PassType pass) {
     setState(() {
       pass == PassType.newPass ? obscure1 = !obscure1 : obscure2 = !obscure2;
@@ -44,6 +75,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                 KTextField(
                   keyboardType: TextInputType.visiblePassword,
                   obscure: obscure1,
+                  error: error,
+                  errorText: errorText,
                   label: "New Password",
                   placeholder: "Enter your new password",
                   prefixIcon: Icon(
@@ -72,6 +105,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                 KTextField(
                   keyboardType: TextInputType.visiblePassword,
                   obscure: obscure2,
+                  error: errorNew,
+                  errorText: errorTextNew,
                   label: "Confirm Password",
                   placeholder: "Confirm your password",
                   onChanged: (val) {
@@ -98,17 +133,25 @@ class _ResetPasswordState extends State<ResetPassword> {
             ),
             ButtonBlock(
               onPress: () async {
+                _validate();
                 try {
-                  await FirebaseAuth.instance.currentUser
-                      .updatePassword(password);
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/login',
-                    (Route<dynamic> route) => false,
-                  );
+                  if (!error && !errorNew) {
+                    await FirebaseAuth.instance.currentUser
+                        .updatePassword(password);
+                    final snackBar = SnackBar(
+                      content: Text(
+                        'Password Berhasil dirubah silahkan login kembali untuk melanjutkan',
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (Route<dynamic> route) => false,
+                    );
+                  }
                 } catch (e) {
-                  print(e);
                   final snackBar = SnackBar(
                     content: Text(
                       'Silahkan login terlebih dahulu untuk mereset password',

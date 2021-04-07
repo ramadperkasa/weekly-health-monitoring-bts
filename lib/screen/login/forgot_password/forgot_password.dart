@@ -5,8 +5,16 @@ import 'package:m_whm/components/layout.dart';
 import 'package:m_whm/components/textfield.dart';
 import 'package:m_whm/components/title_login.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
   String email;
+
+  bool error = false;
+  String errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +39,8 @@ class ForgotPassword extends StatelessWidget {
                         onChanged: (val) {
                           email = val;
                         },
+                        error: error,
+                        errorText: errorText,
                         keyboardType: TextInputType.emailAddress,
                         label: "Email",
                         placeholder: "Enter your email",
@@ -44,22 +54,27 @@ class ForgotPassword extends StatelessWidget {
                   ),
                   ButtonBlock(
                     onPress: () async {
-                      try {
-                        await FirebaseAuth.instance.sendPasswordResetEmail(
-                          email: email,
-                        );
+                      if (email != null) {
+                        try {
+                          await FirebaseAuth.instance.sendPasswordResetEmail(
+                            email: email,
+                          );
 
-                        showAlertDialog(context);
-
-                        // Navigator.pushNamed(context, '/reset-password');
-                      } catch (e) {
-                        print(e);
-                        final snackBar = SnackBar(
-                          content: Text(
-                            'Terjadi Kesalahan',
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          showAlertDialog(context);
+                        } catch (e) {
+                          print(e);
+                          final snackBar = SnackBar(
+                            content: Text(
+                              'Terjadi Kesalahan',
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      } else {
+                        setState(() {
+                          error = true;
+                          errorText = 'Email Harus Diisi';
+                        });
                       }
                     },
                     text: 'SEND',

@@ -11,6 +11,8 @@ class KTextField extends StatelessWidget {
     this.maxLines = 1,
     this.onChanged,
     this.keyboardType = TextInputType.text,
+    this.errorText,
+    this.error = false,
   });
 
   final Function onChanged;
@@ -21,6 +23,8 @@ class KTextField extends StatelessWidget {
   final String placeholder;
   final int maxLines;
   final TextInputType keyboardType;
+  final String errorText;
+  final bool error;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,12 @@ class KTextField extends StatelessWidget {
           textAlignVertical: TextAlignVertical.center,
           maxLines: maxLines,
           decoration: InputDecoration(
+            errorText: errorText,
+            errorBorder: error
+                ? OutlineInputBorder(
+                    borderSide: BorderSide(color: BaseColors.error, width: 1.0),
+                  )
+                : null,
             hintText: placeholder,
             hintStyle: TextStyle(color: BaseColors.placeholder),
             filled: true,
