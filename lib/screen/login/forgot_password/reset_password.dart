@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:m_whm/components/button_block.dart';
 import 'package:m_whm/components/layout.dart';
@@ -15,6 +16,8 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   bool obscure1 = true;
   bool obscure2 = true;
+  String password;
+  String newPassword;
 
   void show(PassType pass) {
     setState(() {
@@ -47,6 +50,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                     Icons.lock,
                     color: BaseColors.primary,
                   ),
+                  onChanged: (val) {
+                    setState(() {
+                      password = val;
+                    });
+                  },
                   suffixIcon: IconButton(
                     onPressed: () {
                       show(PassType.newPass);
@@ -66,6 +74,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                   obscure: obscure2,
                   label: "Confirm Password",
                   placeholder: "Confirm your password",
+                  onChanged: (val) {
+                    setState(() {
+                      newPassword = val;
+                    });
+                  },
                   prefixIcon: Icon(
                     Icons.lock,
                     color: BaseColors.primary,
@@ -84,8 +97,26 @@ class _ResetPasswordState extends State<ResetPassword> {
               ],
             ),
             ButtonBlock(
-              onPress: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/login', (Route<dynamic> route) => false),
+              onPress: () async {
+                try {
+                  await FirebaseAuth.instance.currentUser
+                      .updatePassword(password);
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/login',
+                    (Route<dynamic> route) => false,
+                  );
+                } catch (e) {
+                  print(e);
+                  final snackBar = SnackBar(
+                    content: Text(
+                      'Silahkan login terlebih dahulu untuk mereset password',
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
               text: 'CONFIRM',
             )
           ],
