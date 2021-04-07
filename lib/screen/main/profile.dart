@@ -94,12 +94,17 @@ class Profile extends StatelessWidget {
                     image: Image.asset('assets/icons/ic_padlock.png',
                         height: 25, width: 25),
                     title: 'Password',
-                    value: Text(
-                      'Change Password',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0,
-                        color: BaseColors.accent,
+                    value: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/reset-password');
+                      },
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: BaseColors.accent,
+                        ),
                       ),
                     ),
                   )
@@ -117,7 +122,7 @@ class RowWithSpaceBetween extends StatelessWidget {
   RowWithSpaceBetween({this.image, this.title, this.value});
   final Image image;
   final String title;
-  final Text value;
+  final Widget value;
 
   @override
   Widget build(BuildContext context) {
