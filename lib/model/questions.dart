@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:m_whm/sqlite/db_helper.dart';
 
@@ -67,7 +68,8 @@ class Questions {
         "name": "Weekly Health Monitoring",
         "question": question[i]['question'],
         'answer': answer[i] == QuestionsChoice.ya ? "YA" : "TIDAK",
-        'date': now.toString()
+        'date': now.toString(),
+        'user': FirebaseAuth.instance.currentUser.email.toString()
       };
 
       await dbHelper.save(row);

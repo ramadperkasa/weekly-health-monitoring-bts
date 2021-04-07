@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,6 @@ import 'package:m_whm/components/layout.dart';
 import 'package:m_whm/constant/color.dart';
 import 'package:m_whm/screen/main/history_detail.dart';
 import 'package:m_whm/sqlite/db_helper.dart';
-import 'dart:collection';
 
 class HistoryMonitoring extends StatefulWidget {
   @override
@@ -32,9 +32,15 @@ class _HistoryMonitoringState extends State<HistoryMonitoring> {
       loading = true;
     });
 
-    row = await dbHelper.queryAllRows();
+    List a = await dbHelper.queryAllRows();
 
-    print(row);
+    row = a
+        .where(
+          (element) =>
+              element['user'] ==
+              FirebaseAuth.instance.currentUser.email.toString(),
+        )
+        .toList();
 
     setState(() {
       loading = false;

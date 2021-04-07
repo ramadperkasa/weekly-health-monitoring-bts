@@ -12,6 +12,7 @@ class DBHelper {
   static const String QUESTION = 'question';
   static const String ANSWER = 'answer';
   static const String DATE = 'date';
+  static const String USER = 'user';
   static const String TABLE = 'my_table';
   static const String DB_NAME = 'MyDatabase.db';
 
@@ -36,6 +37,7 @@ class DBHelper {
          $NAME TEXT,
          $QUESTION TEXT,
          $ANSWER TEXT,
+         $USER TEXT,
          $DATE TEXT
         )''');
   }

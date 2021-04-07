@@ -4,8 +4,16 @@ class QuestionModelSql {
   String question;
   String answer;
   String date;
+  String user;
 
-  QuestionModelSql(this.id, this.name, this.question, answer, date);
+  QuestionModelSql(
+    this.id,
+    this.name,
+    this.question,
+    this.answer,
+    this.date,
+    this.user,
+  );
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -13,6 +21,7 @@ class QuestionModelSql {
       'name': name,
       'question': question,
       'answer': answer,
+      'user': user,
       'date': date,
     };
     return map;
@@ -23,6 +32,7 @@ class QuestionModelSql {
     name = map['name'];
     question = map['question'];
     answer = map['answer'];
+    user = map['user'];
     date = map['date'];
   }
 }
