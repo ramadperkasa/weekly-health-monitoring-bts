@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
+
 import 'package:m_whm/screen/main/dashboard.dart';
 
 class TabDashboard extends StatelessWidget {

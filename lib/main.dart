@@ -1,45 +1,70 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
-import 'package:m_whm/screen/login/forgot_password/forgot_password.dart';
-import 'package:m_whm/screen/login/forgot_password/reset_password.dart';
-import 'package:m_whm/screen/main/dashboard.dart';
+import 'package:m_whm/config/routes/application.dart';
+import 'package:m_whm/config/routes/routes.dart';
 
-import 'package:m_whm/screen/main/form_success.dart';
-import 'package:m_whm/screen/main/form_survey.dart';
-import 'package:m_whm/screen/login/login.dart';
-import 'package:m_whm/screen/main/history.dart';
-import 'package:m_whm/screen/main/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/services/save_notification.dart';
+import 'package:m_whm/state/question.dart';
+import 'package:m_whm/state/account.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  SaveNotification().incrementCounter(message);
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => QuestionData(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AccountData(),
+        )
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  MyApp() {
+    final router = FluroRouter();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: BaseColors.primary,
-        fontFamily: 'Nunito',
+    return OverlaySupport(
+      toastTheme: ToastThemeData(
+        background: BaseColors.primary,
+        textColor: Colors.white,
       ),
-      title: 'Backdrop Demo',
-      initialRoute: FirebaseAuth.instance.currentUser != null ? '/' : '/login',
-      routes: {
-        '/': (context) => Dashboard(),
-        '/login': (context) => Login(),
-        '/forgot-password': (context) => ForgotPassword(),
-        '/reset-password': (context) => ResetPassword(),
-        '/profile': (context) => Profile(),
-        '/history': (context) => HistoryMonitoring(),
-        '/form-success': (context) => FormSuccess(),
-        '/form-survey': (context) => FormSurvey()
-      },
+      child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: BaseColors.primary,
+          fontFamily: 'Nunito',
+        ),
+        title: 'Weekly Health Monitoring',
+        onGenerateRoute: Application.router.generator,
+        initialRoute:
+            FirebaseAuth.instance.currentUser != null ? '/' : '/login',
+      ),
     );
   }
 }

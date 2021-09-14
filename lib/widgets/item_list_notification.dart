@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
-import 'package:m_whm/constant/date_time_format.dart';
-import 'package:m_whm/screen/loading_screen.dart';
-import 'package:mock_data/mock_data.dart';
+import 'package:m_whm/constants/color.dart';
 
-class ItemList extends StatelessWidget {
-  ItemList({this.isActive = false});
+import 'package:m_whm/constants/date_time_format.dart';
+import 'package:m_whm/screen/loading_screen.dart';
+
+class ItemListNotification extends StatelessWidget {
+  ItemListNotification({
+    this.isActive = false,
+    this.title,
+    this.expiredDate,
+    this.notificationTitle,
+    this.notificationBody,
+  });
+
+  final String title;
+  final String notificationTitle;
+  final String notificationBody;
+  final DateTime expiredDate;
+
   final bool isActive;
 
   @override
@@ -42,10 +54,12 @@ class ItemList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 2,
-              child: Image.asset('assets/icons/ic_form_active.png',
-                  height: 50, width: 50),
-            ),
+                flex: 2,
+                child: Icon(
+                  Icons.notifications,
+                  size: 50.0,
+                  color: BaseColors.primary,
+                )),
             Expanded(
               flex: 10,
               child: Container(
@@ -54,12 +68,20 @@ class ItemList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Weekly Health Monitoring',
+                      notificationTitle ?? '',
                       style: TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w800),
                     ),
+                    Text(
+                      notificationBody,
+                      style: TextStyle(fontSize: 13.0),
+                    ),
                     SizedBox(
                       height: 12.0,
+                    ),
+                    Text(
+                      title,
+                      style: TextStyle(fontSize: 17.0),
                     ),
                     Row(
                       children: [
@@ -72,10 +94,7 @@ class ItemList extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.only(top: 6.0),
                                 child: Text(
-                                  FormatDate(
-                                          dateTime:
-                                              mockDate(DateTime(2020, 7, 26))
-                                                  .toString())
+                                  FormatDate(dateTime: expiredDate.toString())
                                       .formatDate(),
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 15.0),
@@ -93,10 +112,7 @@ class ItemList extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.only(top: 6.0),
                                 child: Text(
-                                  FormatDate(
-                                          dateTime:
-                                              mockDate(DateTime(2020, 7, 26))
-                                                  .toString())
+                                  FormatDate(dateTime: expiredDate.toString())
                                       .formatTime(),
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 15.0),

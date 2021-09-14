@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:m_whm/components/button_block.dart';
-import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/components/textfield.dart';
-import 'package:m_whm/components/title_login.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/button_block.dart';
+import 'package:m_whm/widgets/layout.dart';
+import 'package:m_whm/widgets/textfield.dart';
+import 'package:m_whm/widgets/title_login.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
@@ -19,21 +20,6 @@ class _LoginState extends State<Login> {
   bool loading = false;
   String email;
   String password;
-
-  @override
-  void initState() {
-    getCurrentUser();
-
-    super.initState();
-  }
-
-  void getCurrentUser() {
-    final user = _auth.currentUser;
-
-    // if (user != null) {
-    //   Navigator.pushReplacementNamed(context, '/');
-    // } else {}
-  }
 
   void show() {
     setState(() {
@@ -101,7 +87,7 @@ class _LoginState extends State<Login> {
                     Center(
                         child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/forgot-password');
+                        Navigator.pushNamed(context, '/password/forgot');
                       },
                       child: Text(
                         'Forgot Password ? ',

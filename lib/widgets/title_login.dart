@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/components/wrap_text.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/wrap_text.dart';
 
 class TitleLogin extends StatelessWidget {
   TitleLogin({this.title, this.subtitle});

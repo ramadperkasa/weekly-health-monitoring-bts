@@ -1,9 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/config/routes/application.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/image/circle_image.dart';
+import 'package:m_whm/widgets/futureBuilder.dart';
 
-class DrawerList extends StatelessWidget {
+class DrawerList extends StatefulWidget {
+  @override
+  _DrawerListState createState() => _DrawerListState();
+}
+
+class _DrawerListState extends State<DrawerList> {
   final _auth = FirebaseAuth.instance;
+
+  // String name;
+  // String image;
+  // String position;
+
+  // @override
+  // void initState() {
+  //   providerAccount = Provider.of<AccountData>(context);
+
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -45,27 +66,25 @@ class DrawerList extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/profile'),
+                    onTap: () => Application.router.navigateTo(
+                      context,
+                      '/profile',
+                      transition: TransitionType.inFromBottom,
+                    ),
                     child: ListTile(
-                      leading: Hero(
-                        tag: 'account',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          child: Image.asset(
-                            'assets/images/avatar.png',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
+                      leading: KCircleImage(
+                        width: 55,
+                        height: 55,
                       ),
                       title: Text(
-                        'Rama Dwiyantara Perkasa',
+                        getData(context, 'name'),
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 15.0),
                       ),
                       subtitle: Text(
-                        'Junior Programmer',
+                        getData(context, 'position'),
                         style: TextStyle(
                             color: BaseColors.secondary, fontSize: 15.0),
                       ),

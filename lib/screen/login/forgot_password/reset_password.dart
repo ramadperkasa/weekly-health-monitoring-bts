@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/components/button_block.dart';
-import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/components/textfield.dart';
-import 'package:m_whm/components/title_login.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/button_block.dart';
+import 'package:m_whm/widgets/layout.dart';
+import 'package:m_whm/widgets/textfield.dart';
+import 'package:m_whm/widgets/title_login.dart';
 
 enum PassType { newPass, confPass }
 
@@ -59,6 +59,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Layout(
         imageUrl: "assets/images/img_forgot_password.png",
         child: Column(

@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/components/button_block.dart';
-import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/components/textfield.dart';
-import 'package:m_whm/components/title_login.dart';
+import 'package:m_whm/widgets/button_block.dart';
+import 'package:m_whm/widgets/layout.dart';
+import 'package:m_whm/widgets/textfield.dart';
+import 'package:m_whm/widgets/title_login.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Layout(
@@ -62,7 +63,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                           showAlertDialog(context);
                         } catch (e) {
-                          print(e);
                           final snackBar = SnackBar(
                             content: Text(
                               'Terjadi Kesalahan',

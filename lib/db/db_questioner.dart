@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:m_whm/sqlite/question.dart';
+import 'package:m_whm/model/question.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-class DBHelper {
+class DBQuestioner {
   static Database _db;
   static const String ID = 'id';
   static const String NAME = 'name';
@@ -13,7 +13,9 @@ class DBHelper {
   static const String ANSWER = 'answer';
   static const String DATE = 'date';
   static const String USER = 'user';
-  static const String TABLE = 'my_table';
+  static const String SHOW = 'show';
+  static const String ADDITIONAL = 'additional';
+  static const String TABLE = 'questioner';
   static const String DB_NAME = 'MyDatabase.db';
 
   Future<Database> get db async {
@@ -38,6 +40,8 @@ class DBHelper {
          $QUESTION TEXT,
          $ANSWER TEXT,
          $USER TEXT,
+         $SHOW TEXT,
+         $ADDITIONAL TEXT,
          $DATE TEXT
         )''');
   }

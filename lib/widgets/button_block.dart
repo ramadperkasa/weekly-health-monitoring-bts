@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
 
 class ButtonBlock extends StatelessWidget {
   ButtonBlock({
@@ -23,8 +23,9 @@ class ButtonBlock extends StatelessWidget {
             fontSize: 20.0, fontWeight: FontWeight.w800, letterSpacing: 0.8),
       ),
       style: ElevatedButton.styleFrom(
-          primary: BaseColors.primary,
-          minimumSize: Size(MediaQuery.of(context).size.width, 50)),
+        primary: BaseColors.primary,
+        minimumSize: Size(MediaQuery.of(context).size.width, 50),
+      ),
     );
   }
 }

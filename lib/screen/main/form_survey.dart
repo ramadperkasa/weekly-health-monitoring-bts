@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/components/button_block.dart';
-import 'package:m_whm/components/detail_information_question.dart';
-import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/constant/color.dart';
-import 'package:m_whm/model/questions.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/button_block.dart';
+import 'package:m_whm/widgets/detail_information_question.dart';
+import 'package:m_whm/widgets/layout.dart';
+
+import 'package:m_whm/state/question.dart';
+import 'package:provider/provider.dart';
 
 class FormSurvey extends StatefulWidget {
-  FormSurvey({this.questionList});
-  final questionList;
   @override
-  _FormSurveyState createState() => _FormSurveyState(questionList);
+  _FormSurveyState createState() => _FormSurveyState();
 }
 
 class _FormSurveyState extends State<FormSurvey> {
-  _FormSurveyState(questionList) {
-    currentQuestion = questionList['questions'];
-  }
   double ratioHeight = 1.13;
-  Questions questions = Questions();
-
   dynamic currentQuestion;
 
   @override
   initState() {
+    clearQuestion();
+
     super.initState();
+  }
+
+  clearQuestion() {
+    Provider.of<QuestionData>(context, listen: false).clearQuestions();
+    Provider.of<QuestionData>(context, listen: false).clearForm(null);
   }
 
   @override
   Widget build(BuildContext context) {
-    dynamic currentQuestionModel = questions.getCurrentQuestions();
+    QuestionData providerQuestioner = Provider.of<QuestionData>(context);
+    QuestionData providerQuestionerListen =
+        Provider.of<QuestionData>(context, listen: false);
+    currentQuestion =
+        Provider.of<QuestionData>(context, listen: false).quesionerList;
+
     return Scaffold(
       body: Layout(
-        title: Text('Weekly Health Monitoring'),
+        isHome: true,
+        title: Text(providerQuestioner.title),
         enabledPadding: false,
         isDrawer: false,
         ratioHeight: ratioHeight,
@@ -41,7 +49,7 @@ class _FormSurveyState extends State<FormSurvey> {
               padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 18.0),
               child: Center(
                 child: Text(
-                  '$currentQuestionModel of ${currentQuestion.length ?? 0} Questions',
+                  '${providerQuestioner.currentQuestions} of ${currentQuestion.length ?? 0} Questions',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0,
@@ -65,8 +73,8 @@ class _FormSurveyState extends State<FormSurvey> {
                     Column(
                       children: [
                         Text(
-                          currentQuestion[currentQuestionModel - 1]
-                                  ['question'] ??
+                          currentQuestion[providerQuestioner.currentQuestions -
+                                  1]['question'] ??
                               'Error Fetch Questions',
                           style: TextStyle(fontSize: 16.0),
                         ),
@@ -86,10 +94,13 @@ class _FormSurveyState extends State<FormSurvey> {
                                   Radio<QuestionsChoice>(
                                     activeColor: BaseColors.primary,
                                     value: QuestionsChoice.ya,
-                                    groupValue: questions.getCurrentAnswer(),
+                                    groupValue:
+                                        providerQuestioner.currentAnswer,
                                     onChanged: (QuestionsChoice value) {
                                       setState(() {
-                                        questions.setAnswer(value);
+                                        providerQuestioner.currentAnswer =
+                                            value;
+                                        // providerQuestioner.setAnswer(value);
                                       });
                                     },
                                   ),
@@ -107,10 +118,15 @@ class _FormSurveyState extends State<FormSurvey> {
                                   Radio<QuestionsChoice>(
                                     activeColor: BaseColors.primary,
                                     value: QuestionsChoice.tidak,
-                                    groupValue: questions.getCurrentAnswer(),
+                                    groupValue:
+                                        providerQuestioner.currentAnswer,
                                     onChanged: (QuestionsChoice value) {
                                       setState(() {
-                                        questions.setAnswer(value);
+                                        providerQuestioner.currentAnswer =
+                                            value;
+                                        providerQuestionerListen
+                                            .clearForm(null);
+                                        // providerQuestioner.setAnswer(value);
                                       });
                                     },
                                   ),
@@ -123,7 +139,11 @@ class _FormSurveyState extends State<FormSurvey> {
                             ),
                           ],
                         ),
-                        showDetailInformation()
+                        showDetailInformation(
+                          currentQuestion,
+                          providerQuestioner,
+                          providerQuestionerListen,
+                        )
                       ],
                     ),
                     Column(
@@ -131,25 +151,28 @@ class _FormSurveyState extends State<FormSurvey> {
                       children: [
                         Container(
                           child: ButtonBlock(
-                            isDisabled: questions.getCurrentAnswer() ==
+                            isDisabled: providerQuestioner.currentAnswer ==
                                     QuestionsChoice.belum_di_set
                                 ? true
                                 : false,
-                            onPress: () {
+                            onPress: () async {
                               setState(() {
-                                if (!questions
-                                    .isLast(currentQuestion ?? null)) {
-                                  questions.nextQuestions();
+                                if (providerQuestionerListen.next()) {
+                                  providerQuestionerListen.nextQuestions();
                                 } else {
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      '/form-success',
+                                      '/form/success',
                                       (Route<dynamic> route) => false);
-                                  questions.clearQuestions();
+                                  providerQuestionerListen.insertToDb();
+                                  providerQuestionerListen.clearQuestions();
+                                  providerQuestioner.clearForm(null);
                                 }
                               });
                             },
-                            text: 'NEXT',
+                            text: providerQuestionerListen.next()
+                                ? 'NEXT'
+                                : 'FINISH',
                           ),
                         ),
                       ],
@@ -164,10 +187,11 @@ class _FormSurveyState extends State<FormSurvey> {
     );
   }
 
-  Widget showDetailInformation() {
-    return questions.getCurrentAnswer() ==
-            questions.convertToQuestionChoice(
-              currentQuestion[questions.getCurrentQuestions() - 1]
+  Widget showDetailInformation(
+      currentQuestion, providerQuestioner, providerQuestionerListen) {
+    return providerQuestioner.currentAnswer ==
+            providerQuestionerListen.convertToQuestionChoice(
+              currentQuestion[providerQuestioner.currentQuestions - 1]
                   ['show_detail_when'],
             )
         ? Column(
@@ -195,7 +219,7 @@ class _FormSurveyState extends State<FormSurvey> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            questions.numberForm++;
+                            providerQuestionerListen.addForm();
                           });
                         },
                         child: Row(
@@ -223,13 +247,17 @@ class _FormSurveyState extends State<FormSurvey> {
                     height: MediaQuery.of(context).size.height / 2,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: questions.numberForm,
+                      itemCount: providerQuestioner.numberForm,
                       itemBuilder: (context, index) {
                         return DetailInformationCard(
+                          index: index,
+                          providerQuestioner: providerQuestioner,
                           onPress: () {
                             setState(() {
-                              if (questions.numberForm > 1) {
-                                questions.numberForm--;
+                              if (providerQuestioner.numberForm > 1) {
+                                providerQuestionerListen.minusNumberForm(index);
+                              } else {
+                                providerQuestionerListen.clearForm(index);
                               }
                             });
                           },

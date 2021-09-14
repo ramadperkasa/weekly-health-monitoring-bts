@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/components/card_profile.dart';
-import 'package:m_whm/components/item_list.dart';
-import 'package:m_whm/components/layout.dart';
-import 'package:m_whm/components/tab_dashboard.dart';
-import 'package:m_whm/constant/color.dart';
-import 'package:m_whm/components/drawer.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/active_list_view.dart';
+import 'package:m_whm/widgets/card_profile.dart';
+import 'package:m_whm/widgets/history/history_list_view.dart';
+import 'package:m_whm/widgets/layout.dart';
+import 'package:m_whm/widgets/drawer.dart';
+import 'package:m_whm/services/push_notification.dart';
 
 enum ActiveTab { Active, History }
 
@@ -18,6 +19,15 @@ class _DashboardState extends State<Dashboard> {
 
   ActiveTab activeTab = ActiveTab.Active;
 
+  final scaffoldState = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    PushNotificationService().handleInAppNotification(context);
+
+    super.initState();
+  }
+
   void setActiveTab(ActiveTab tabPass) {
     setState(() {
       activeTab = tabPass;
@@ -29,9 +39,12 @@ class _DashboardState extends State<Dashboard> {
     double ratioHeight = 1.13;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       drawer: Theme(
-        data: Theme.of(context).copyWith(canvasColor: BaseColors.darkerPrimary),
+        data: Theme.of(context).copyWith(
+          canvasColor: BaseColors.darkerPrimary,
+        ),
         child: Drawer(child: DrawerList()),
       ),
       body: Layout(
@@ -51,19 +64,36 @@ class _DashboardState extends State<Dashboard> {
               color: Color(0xFFF3F3F3),
             ),
             SizedBox(height: 8.0),
-            TabDashboard(
-              activeTab: activeTab,
-              onActivePressed: () => setActiveTab(ActiveTab.Active),
-              onHistoryPressed: () => setActiveTab(ActiveTab.History),
-            ),
-            SizedBox(height: 8.0),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return ItemList(
-                      isActive: activeTab == ActiveTab.Active ? true : false);
-                },
+            DefaultTabController(
+              length: 2,
+              initialIndex: 0,
+              child: Expanded(
+                child: Column(children: <Widget>[
+                  TabBar(
+                    labelColor: Colors.black,
+                    unselectedLabelColor: BaseColors.placeholder,
+                    indicatorColor: BaseColors.primary,
+                    indicatorWeight: 4.0,
+                    labelStyle: TextStyle(fontSize: 18.0),
+                    tabs: [
+                      Tab(text: 'Active'),
+                      Tab(text: 'History'),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.grey, width: 0.5),
+                        ),
+                      ),
+                      child: TabBarView(children: <Widget>[
+                        ActiveListView(),
+                        HistoryListView()
+                      ]),
+                    ),
+                  )
+                ]),
               ),
             ),
           ],

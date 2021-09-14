@@ -1,6 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
 
 class Layout extends StatelessWidget {
   Layout({
@@ -13,7 +13,10 @@ class Layout extends StatelessWidget {
     this.title = const Text(''),
     this.isAppBar = true,
     this.actions,
+    this.isHome = false,
+    this.leading,
   });
+
   final Widget child;
   final String imageUrl;
   final double ratioHeight;
@@ -22,7 +25,9 @@ class Layout extends StatelessWidget {
   final bool enabledPadding;
   final Widget title;
   final bool isAppBar;
+  final Widget leading;
   final List<Widget> actions;
+  final bool isHome;
 
   @override
   Widget build(BuildContext context) {
@@ -67,32 +72,17 @@ class Layout extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   centerTitle: true,
                   leading: TextButton.icon(
-                      onPressed: onPressed,
-                      icon: Image.asset('assets/icons/ic_hamburger_menu.png',
-                          height: 25, width: 25),
-                      label: Text('')),
+                    onPressed: onPressed,
+                    icon: Image.asset('assets/icons/ic_hamburger_menu.png',
+                        height: 25, width: 25),
+                    label: Text(''),
+                  ),
                   toolbarHeight: fullHeight - height,
                   title: Text(
                     'Dashboard',
                     style: TextStyle(fontSize: 25.0),
                   ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/history'),
-                        child: Badge(
-                          position: BadgePosition(top: 7, end: 3),
-                          badgeColor: BaseColors.accent,
-                          child: Image.asset(
-                            'assets/icons/ic_notification.png',
-                            height: 25,
-                            width: 25,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                  actions: [HistoryIcon()],
                 ),
               )
             : isAppBar
@@ -100,14 +90,18 @@ class Layout extends StatelessWidget {
                     height: fullHeight - height,
                     child: AppBar(
                       centerTitle: true,
-                      leading: IconButton(
-                        icon: Image.asset(
-                          'assets/icons/ic_arrow_left.png',
-                          height: 25,
-                          width: 25,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
+                      leading: leading != null
+                          ? leading
+                          : IconButton(
+                              icon: Image.asset(
+                                'assets/icons/ic_arrow_left.png',
+                                height: 25,
+                                width: 25,
+                              ),
+                              onPressed: () => isHome
+                                  ? Navigator.pushNamed(context, '/')
+                                  : Navigator.of(context).pop(),
+                            ),
                       actions: actions,
                       elevation: 0.0,
                       backgroundColor: Colors.transparent,
@@ -133,6 +127,30 @@ class Layout extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+}
+
+class HistoryIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/history/notification',
+        ),
+        child: Badge(
+          position: BadgePosition(top: 23, end: 3),
+          badgeColor: BaseColors.accent,
+          child: Image.asset(
+            'assets/icons/ic_notification.png',
+            height: 25,
+            width: 25,
+          ),
+        ),
+      ),
     );
   }
 }

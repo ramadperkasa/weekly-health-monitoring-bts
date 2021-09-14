@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/components/button_block.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/widgets/button_block.dart';
 
 class FormSuccess extends StatelessWidget {
   @override

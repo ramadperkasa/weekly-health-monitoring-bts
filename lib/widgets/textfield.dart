@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
 
 class KTextField extends StatelessWidget {
   const KTextField({
@@ -13,6 +13,7 @@ class KTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.errorText,
     this.error = false,
+    this.controller,
   });
 
   final Function onChanged;
@@ -25,22 +26,29 @@ class KTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final String errorText;
   final bool error;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(
-              label,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )),
-        SizedBox(
-          height: 12.0,
-        ),
+        label != null
+            ? Container(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Text(
+                  label,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              )
+            : Container(),
+        label != null
+            ? SizedBox(
+                height: 12.0,
+              )
+            : Container(),
         TextField(
+          controller: controller,
           keyboardType: keyboardType,
           onChanged: onChanged,
           style: TextStyle(fontSize: 18.0),

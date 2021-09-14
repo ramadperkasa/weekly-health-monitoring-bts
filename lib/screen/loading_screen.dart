@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:m_whm/constant/color.dart';
+import 'package:m_whm/constants/color.dart';
+import 'package:m_whm/screen/main/dashboard.dart';
+
 import 'package:m_whm/screen/main/form_survey.dart';
-import 'package:m_whm/services/network.dart';
+import 'package:m_whm/state/question.dart';
+import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -18,19 +21,34 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void fetchQuestion() async {
-    var data = await NetworkHelper()
-        .getData('https://private-6435f7-quesioner.apiary-mock.com/questions');
+    try {
+      await context.read<QuestionData>().fetchQuestion();
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return FormSurvey(
-            questionList: data,
-          );
-        },
-      ),
-    );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return FormSurvey();
+          },
+        ),
+      );
+    } catch (e) {
+      final snackBar = SnackBar(
+        content: Text(
+          'Terjadi Kesalahan',
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return Dashboard();
+          },
+        ),
+      );
+    }
   }
 
   @override
